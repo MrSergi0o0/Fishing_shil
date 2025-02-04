@@ -21,27 +21,28 @@ text_for_collection = small_font.render("Collection", True, BLACK)
     
 image_table1 = pygame.image.load("table.png")
 
-###################big_image_table = pygame.image.load("")
 
-class Fish_creater:
-    def __init__(self, name, image, kg_info, x_for_rect, y_for_rect, x_for_image, y_for_image): # info
+class FishCreater(pygame.sprite.Sprite):
+    def __init__(self, name, image, kg_info, x, y, w, h): # info
+        super().__init__()
         self.name = name
-        self.image = image
         self.kg_info = kg_info
-        self.x_for_rect = x_for_rect
-        self.y_for_rect = y_for_rect
-        self.x_for_image = x_for_image
-        self.y_for_image = y_for_image
-        #self.info = info
+        self.image = pygame.transform.scale(
+            pygame.image.load(image),
+            (w, h)
+        )
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = x, y
 
-    def draw_cart(self, x_for_rect, y_for_rect, image, x_for_image, y_for_image, name, kg_info): # info
-        pygame.draw.rect(screen, BROWN, (x_for_rect, y_for_rect, 75, 120))
-        screen.blit(image, (x_for_image, y_for_image))
-        info = small_font.render(name + " " + kg_info, True, BLACK)  
-        screen.blit(info, (x_for_image + 10, y_for_image + 60))
+    def draw(self): # draw
+        pygame.draw.rect(screen, BROWN, (self.rect.x, self.rect.y, 75, 120))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        info = small_font.render(self.name + " " + self.kg_info, True, BLACK)
+        screen.blit(info, (self.rect.x + 10, self.rect.y + 60))
 
 
-fish1 = Fish_creater("Петя", "fish_1.png", "3 kg", 20, 10, 25, 15)
+fish1 = FishCreater("Петя", "fish_1.png", "3 kg", 20, 10, 25, 15)
+
 
 game = True
 while game:
@@ -54,7 +55,7 @@ while game:
     screen.blit(image_fon, image_fon_rect)
     screen.blit(image_table1, (10, -20))
     screen.blit(text_for_collection, (30, 49))
-    fish1.draw_cart(20, 10, "fish_1.png", 25, 15, "Петя", "3 kg")
+    fish1.draw()
 
 # image fishs
 # Механіка ловлі риби ви натискаєте кнопку і зявляється !!!перемикач!!! якщо попасти почервоному квадрату ви виграли і отримуєте рибу
